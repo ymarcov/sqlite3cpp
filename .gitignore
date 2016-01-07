@@ -1,2 +1,3 @@
 .tup
 libsqlite3cpp.so
+test
