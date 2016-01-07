@@ -1,7 +1,7 @@
 ### How to use
 
 ```c++
-Sqlite db{"data.db"};
+auto db = Sqlite{"data.db"};
 
 // query
 {
@@ -19,8 +19,8 @@ Sqlite db{"data.db"};
 {
     auto t = Sqlite::Transaction{db};
 
-    t.transact("INSERT INTO MyTable (Id, Name) VALUES (NULL, ?)", "Yam");
-    t.transact("INSERT INTO MyTable (Id, Name) VALUES (NULL, ?)", "Albert");
+    db.exec("INSERT INTO MyTable (Id, Name) VALUES (NULL, ?)", "Yam");
+    db.exec("INSERT INTO MyTable (Id, Name) VALUES (NULL, ?)", "Albert");
 
     t.commit();
 
