@@ -1,0 +1,1 @@
+: Sqlite.cc |> g++ -std=c++11 -shared -fPIC -o %o %f -lsqlite3 |> libsqlite3cpp.so
