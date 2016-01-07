@@ -6,11 +6,9 @@
 class sqlite3;
 class sqlite3_stmt;
 
-class Sqlite
-{
+class Sqlite {
 public:
-    class Statement
-    {
+    class Statement {
     public:
         Statement();
         Statement(sqlite3_stmt*);
@@ -20,6 +18,9 @@ public:
         Statement& operator=(Statement&&);
         virtual ~Statement();
 
+        void reset();
+        void clearBindings();
+
         bool exec();
         bool step();
         template <typename T> void bind(unsigned index, T value);
@@ -27,8 +28,7 @@ public:
 
         static void bindAll(Statement&, unsigned) {}
         template <typename T, typename... Args>
-        static void bindAll(Statement& stmt, unsigned index, T val, Args... args)
-        {
+        static void bindAll(Statement& stmt, unsigned index, T val, Args... args) {
             stmt.bind(index, val);
             bindAll(stmt, ++index, args...);
         }
@@ -37,27 +37,9 @@ public:
         sqlite3_stmt* stmt;
     };
 
-    class Transaction
-    {
+    class Transaction {
     public:
-        class Error : std::runtime_error
-        {
-        public:
-            Error();
-        };
-
-        class Statement : public Sqlite::Statement
-        {
-        public:
-            Statement(Transaction*, sqlite3_stmt*);
-            void transact();
-
-        private:
-            Transaction* t;
-        };
-
-        enum class Type
-        {
+        enum class Type {
             Deferred,
             Exclusive,
             Immediate
@@ -65,22 +47,6 @@ public:
 
         Transaction(Sqlite&, Type = Type::Deferred);
         ~Transaction();
-
-        Statement stmt(const std::string& sql);
-
-        template <typename... Args>
-        Statement stmt(const std::string& sql, Args... args)
-        {
-            Statement s = stmt(sql);
-            Statement::bindAll(s, 0, args...);
-            return s;
-        }
-
-        template <typename... Args>
-        void transact(const std::string& sql, Args... args)
-        {
-            stmt(sql, args...).transact();
-        }
 
         void rollback();
         void commit();
@@ -94,19 +60,17 @@ public:
     ~Sqlite();
 
     Statement stmt(const std::string& sql);
-    bool exec(const std::string& sql);
+    void exec(const std::string& sql);
 
     template <typename... Args>
-    Statement stmt(const std::string& sql, Args... args)
-    {
+    Statement stmt(const std::string& sql, Args... args) {
         Statement s = stmt(sql);
         Statement::bindAll(s, 0, args...);
         return s;
     }
 
     template <typename... Args>
-    void exec(const std::string& sql, Args... args)
-    {
+    void exec(const std::string& sql, Args... args) {
         stmt(sql, args...).exec();
     }
 

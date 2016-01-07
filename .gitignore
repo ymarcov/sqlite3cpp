@@ -1,3 +1,4 @@
 .tup
 libsqlite3cpp.so
 test
+data.db
