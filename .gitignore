@@ -2,3 +2,8 @@
 libsqlite3cpp.so
 test
 data.db
+CMakeCache.txt
+CMakeFiles
+Makefile
+bin/
+*.cmake
