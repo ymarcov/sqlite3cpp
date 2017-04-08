@@ -14,6 +14,7 @@ add_compile_options(-std=c++14 -fPIC -O3 -Werror -Wall -Wpedantic)
 
 project(sqlite3cpp)
 add_library(sqlite3cpp SHARED Sqlite.cc)
+target_link_libraries(sqlite3cpp sqlite3)
 
-project(sqlite3cpp_stati)
+project(sqlite3cpp_static)
 add_library(sqlite3cpp_static STATIC Sqlite.cc)
