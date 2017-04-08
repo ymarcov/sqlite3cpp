@@ -6,6 +6,8 @@
 class sqlite3;
 class sqlite3_stmt;
 
+namespace Yam {
+
 class Sqlite {
 public:
     class Statement {
@@ -80,3 +82,5 @@ private:
     sqlite3_stmt* prepare(const std::string& sql);
     sqlite3* db;
 };
+
+} // namespace Yam

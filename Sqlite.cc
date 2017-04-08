@@ -4,6 +4,8 @@
 #include <sqlite3.h>
 #include <stdexcept>
 
+namespace Yam {
+
 /*
  * DB::Statement
  */
@@ -171,3 +173,5 @@ sqlite3_stmt* Sqlite::prepare(const std::string& sql) {
     ::sqlite3_prepare_v2(db, sql.c_str(), sql.length(), &stmt, nullptr);
     return stmt;
 }
+
+} // namespace Yam
